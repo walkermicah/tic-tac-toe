@@ -1,0 +1,49 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+:root {
+  --game-color: rgb(0, 0, 0);
+}
+
+html {
+  font-size: 62.5%;
+}
+
+body {
+  box-sizing: border-box;
+  font-family: "Montserrat", sans-serif;
+}
+
+.container {
+  height: 100vh;
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
+
+.gameboard {
+  width: 45rem;
+  height: 45rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  background-color: transparent;
+  border: 2px solid var(--game-color);
+}
+
+.cell {
+  border: 2px solid var(--game-color);
+  font-family: "Montserrat", sans-serif;
+  color: var(--game-color);
+  font-size: 8rem;
+  cursor: pointer;
+
+  display: grid;
+  align-items: center;
+  justify-items: center;
+}
