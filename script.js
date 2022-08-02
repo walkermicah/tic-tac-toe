@@ -32,15 +32,31 @@ const GameBoard = (() => {
   };
 
   const checkForWinner = () => {
-    //012 //345 //678 //036 //147 //258 //048 //246
-    //const winningOptions = [{mark1:, mark2: , mark3:}, {mark1:, mark2: , mark3:} etc]
-    //winningOptions.forEach(option => { if board[mark1] === board[mark2] === board[mark3], cl("win")})
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    winningCombinations.forEach((arr) => {
+      if (arr.every((cell) => boardArray[cell] === mark)) console.log("WIN");
+    });
+  };
+
+  const checkForTie = () => {
+    if (boardArray.every(Boolean)) console.log("TIE");
   };
 
   boardDisplay.addEventListener("click", function (e) {
     if (!e.target.classList.contains("cell")) return;
     addMarkToBoard(e.target.dataset.number, mark);
-    // checkForWinner();
+    checkForWinner();
+    checkForTie();
   });
 })();
 
