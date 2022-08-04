@@ -1,7 +1,5 @@
 "use strict";
 
-const mark = "X";
-
 const GameBoard = (() => {
   const boardArray = [
     undefined,
@@ -14,10 +12,9 @@ const GameBoard = (() => {
     undefined,
     undefined,
   ];
-  const cells = document.querySelectorAll(".cell");
-  const boardDisplay = document.querySelector(".gameboard");
 
-  const updateBoardArray = () => {
+  const updateGameboard = () => {
+    const cells = document.querySelectorAll(".cell");
     cells.forEach((cell) => {
       !boardArray[cell.dataset.number]
         ? (cell.textContent = "")
@@ -25,13 +22,13 @@ const GameBoard = (() => {
     });
   };
 
-  const addMarkToBoard = (cell, mark) => {
+  const addMarkToBoardArray = (cell, mark) => {
     if (boardArray[cell]) return;
     boardArray[cell] = mark;
-    updateBoardArray();
+    updateGameboard();
   };
 
-  const checkForWinner = () => {
+  const checkForWinner = (mark) => {
     const winningCombinations = [
       [0, 1, 2],
       [3, 4, 5],
@@ -50,16 +47,23 @@ const GameBoard = (() => {
 
   const checkForTie = () => {
     if (boardArray.every(Boolean)) console.log("TIE");
+    //instead of cl, display winner & call newGameButton function
   };
 
-  boardDisplay.addEventListener("click", function (e) {
-    if (!e.target.classList.contains("cell")) return;
-    addMarkToBoard(e.target.dataset.number, mark);
-    checkForWinner();
-    checkForTie();
-  });
+  return { addMarkToBoardArray, checkForWinner, checkForTie };
 })();
 
-const DisplayController = (() => {})();
+const GameController = (() => {
+  const mark = "X";
+
+  const gameBoard = document.querySelector(".gameboard");
+
+  gameBoard.addEventListener("click", function (e) {
+    if (!e.target.classList.contains("cell")) return;
+    GameBoard.addMarkToBoardArray(e.target.dataset.number, mark);
+    GameBoard.checkForWinner(mark);
+    GameBoard.checkForTie();
+  });
+})();
 
 const Player = (name) => {};
