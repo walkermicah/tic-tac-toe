@@ -18,45 +18,11 @@ const GameBoard = (() => {
     updateGameboard();
   };
 
-  const checkForWinner = (active) => {
-    let winner;
-    const winningCombinations = [
-      [0, 1, 2],
-      [3, 4, 5],
-      [6, 7, 8],
-      [0, 3, 6],
-      [1, 4, 7],
-      [2, 5, 8],
-      [0, 4, 8],
-      [2, 4, 6],
-    ];
-
-    winningCombinations.forEach((arr) => {
-      if (arr.every((cell) => boardArray[cell] === active.mark)) {
-        console.log("WIN");
-        winner = active.player;
-        GameController.resetGame();
-      }
-    });
-
-    if (!winner) GameController.switchActivePlayer();
-    //if winner, instead of cl: get winner
-    //call congratulateWinner function on player that won
-    //call newGameButton function from gameController
-  };
-
-  const checkForTie = () => {
-    if (boardArray.every(Boolean)) {
-      console.log("TIE");
-      GameController.resetGame();
-    }
-  };
-
   const resetBoard = () => {
     boardArray.fill(undefined);
   };
 
-  return { addMarkToBoardArray, checkForWinner, checkForTie, resetBoard };
+  return { boardArray, addMarkToBoardArray, resetBoard };
 })();
 
 const GameController = (() => {
@@ -80,23 +46,46 @@ const GameController = (() => {
     active = p1;
   };
 
-  //new game button function: button appears and calls resetGame when pressed
+  const checkForWinner = (active) => {
+    let winner;
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+
+    winningCombinations.forEach((arr) => {
+      if (arr.every((cell) => GameBoard.boardArray[cell] === active.mark)) {
+        console.log("WIN");
+        winner = active.player;
+        resetGame(); //show new game button instead
+      }
+    });
+
+    if (!winner) switchActivePlayer();
+  };
+
+  const checkForTie = () => {
+    if (GameBoard.boardArray.every(Boolean)) {
+      console.log("TIE");
+      resetGame(); //show new game button instead
+    }
+  };
 
   gameBoard.addEventListener("click", function (e) {
     if (!e.target.classList.contains("cell")) return;
     GameBoard.addMarkToBoardArray(e.target.dataset.number, active.mark);
-    GameBoard.checkForWinner(active);
-    GameBoard.checkForTie();
+    checkForWinner(active);
+    checkForTie();
   });
-
-  return { switchActivePlayer, resetGame };
 })();
 
-const Player = (name) => {
-  //-event listener to get name typed in. when name is submitted, display it in div
-  //function to highlight player when it's their turn
-  //function to congratulate winner
-};
+const Player = (name) => {};
 
 const player1 = Player("Player 1");
 const player2 = Player("Player 2");
