@@ -20,6 +20,7 @@ const GameBoard = (() => {
 
   const resetBoard = () => {
     boardArray.fill(undefined);
+    updateGameboard();
   };
 
   return { boardArray, addMarkToBoardArray, resetBoard };
@@ -27,6 +28,7 @@ const GameBoard = (() => {
 
 const GameController = (() => {
   const gameBoard = document.querySelector(".gameboard");
+  const newGameBtn = document.querySelector(".new-game-btn");
 
   const p1 = {
     mark: "X",
@@ -40,11 +42,6 @@ const GameController = (() => {
 
   const switchActivePlayer = () =>
     active === p1 ? (active = p2) : (active = p1);
-
-  const resetGame = () => {
-    GameBoard.resetBoard();
-    active = p1;
-  };
 
   const checkForWinner = (active) => {
     let winner;
@@ -63,7 +60,7 @@ const GameController = (() => {
       if (arr.every((cell) => GameBoard.boardArray[cell] === active.mark)) {
         console.log("WIN");
         winner = active.player;
-        resetGame(); //show new game button instead
+        showNewGameBtn();
       }
     });
 
@@ -73,19 +70,40 @@ const GameController = (() => {
   const checkForTie = () => {
     if (GameBoard.boardArray.every(Boolean)) {
       console.log("TIE");
-      resetGame(); //show new game button instead
+      showNewGameBtn();
     }
   };
 
-  gameBoard.addEventListener("click", function (e) {
+  const showNewGameBtn = () => {
+    newGameBtn.classList.remove("hidden");
+    gameBoard.classList.add("fade");
+    gameBoard.removeEventListener("click", startGame);
+  };
+
+  const startGame = (e) => {
     if (!e.target.classList.contains("cell")) return;
     GameBoard.addMarkToBoardArray(e.target.dataset.number, active.mark);
     checkForWinner(active);
     checkForTie();
-  });
+  };
+
+  const resetGame = () => {
+    GameBoard.resetBoard();
+    active = p1;
+    newGameBtn.classList.add("hidden");
+    gameBoard.classList.remove("fade");
+    gameBoard.addEventListener("click", startGame);
+  };
+
+  newGameBtn.addEventListener("click", resetGame);
+  resetGame();
 })();
 
-const Player = (name) => {};
+const Player = (name) => {
+  //-event listener to get name typed in. when name is submitted, display it in div
+  //function to highlight player when it's their turn
+  //function to congratulate winner
+};
 
 const player1 = Player("Player 1");
 const player2 = Player("Player 2");
