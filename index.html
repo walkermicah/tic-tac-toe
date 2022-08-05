@@ -19,7 +19,67 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
-    <div class="container">
+    <div class="player-container">
+      <div class="player-display">
+        <div class="player" id="player-1">
+          <span class="player-name" id="name-1">PLAYER 1</span>
+          <button class="edit-btn">
+            <img
+              src="img/edit.png"
+              alt="edit name"
+              class="edit-icon"
+              id="edit-icon-1"
+            />
+          </button>
+        </div>
+        <form action="#" class="form hidden" id="form-1">
+          <input
+            type="text"
+            placeholder="Player name"
+            class="form-input"
+            id="form-input-1"
+            autofocus
+          />
+          <input
+            type="button"
+            value="SUBMIT"
+            class="submit-btn"
+            id="submit-btn-1"
+          />
+        </form>
+      </div>
+
+      <div class="player-display">
+        <div class="player" id="player-2">
+          <span class="player-name" id="name-2">PLAYER 2</span>
+          <button class="edit-btn">
+            <img
+              src="img/edit.png"
+              alt="edit name"
+              class="edit-icon"
+              id="edit-icon-2"
+            />
+          </button>
+        </div>
+        <form action="#" class="form hidden" id="form-2">
+          <input
+            type="text"
+            placeholder="Player name"
+            class="form-input"
+            id="form-input-2"
+            autofocus
+          />
+          <input
+            type="button"
+            value="SUBMIT"
+            class="submit-btn"
+            id="submit-btn-2"
+          />
+        </form>
+      </div>
+    </div>
+
+    <div class="game-container">
       <div class="gameboard">
         <div class="cell" data-number="0"></div>
         <div class="cell" data-number="1"></div>
@@ -30,7 +90,8 @@
         <div class="cell" data-number="6"></div>
         <div class="cell" data-number="7"></div>
         <div class="cell" data-number="8"></div>
-      </number
+      </div>
+      <button class="new-game-btn hidden">NEW GAME</button>
     </div>
   </body>
 </html>
