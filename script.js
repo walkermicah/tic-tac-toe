@@ -1,47 +1,70 @@
 "use strict";
 
 const GameBoard = (() => {
-  const boardArray = new Array(9).fill(undefined);
+  const board = new Array(9).fill(undefined);
+
+  const getBoard = () => board;
 
   const updateGameboard = () => {
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell) => {
-      !boardArray[cell.dataset.number]
+      !board[cell.dataset.number]
         ? (cell.textContent = "")
-        : (cell.textContent = `${boardArray[cell.dataset.number]}`);
+        : (cell.textContent = `${board[cell.dataset.number]}`);
     });
   };
 
   const addMarkToBoardArray = (cell, mark) => {
-    if (boardArray[cell]) return;
-    boardArray[cell] = mark;
+    if (board[cell]) return;
+    board[cell] = mark;
     updateGameboard();
   };
 
   const resetBoard = () => {
-    boardArray.fill(undefined);
+    board.fill(undefined);
     updateGameboard();
   };
 
-  return { boardArray, addMarkToBoardArray, resetBoard };
+  return { getBoard, addMarkToBoardArray, resetBoard };
 })();
+
+const Player = (name, mark) => {
+  const getName = () => name;
+  const getMark = () => mark;
+
+  const changeName = (newName) => {
+    name = newName;
+  };
+
+  const congratulateWinner = () => {
+    console.log(`Winner: ${name}`);
+  };
+
+  return { getName, getMark, changeName, congratulateWinner };
+};
+
+const player1 = Player("Player 1", "X");
+const player2 = Player("Player 2", "O");
 
 const GameController = (() => {
   const gameBoard = document.querySelector(".gameboard");
   const newGameBtn = document.querySelector(".new-game-btn");
 
+  const board = GameBoard.getBoard();
+
   const p1 = {
-    mark: "X",
-    player: "player1",
+    mark: player1.getMark(),
+    player: player1.getName(),
   };
   const p2 = {
-    mark: "O",
-    player: "player2",
+    mark: player2.getMark(),
+    player: player2.getName(),
   };
   let active = p1;
 
-  const switchActivePlayer = () =>
+  const switchActivePlayer = () => {
     active === p1 ? (active = p2) : (active = p1);
+  };
 
   const checkForWinner = (active) => {
     let winner;
@@ -57,9 +80,11 @@ const GameController = (() => {
     ];
 
     winningCombinations.forEach((arr) => {
-      if (arr.every((cell) => GameBoard.boardArray[cell] === active.mark)) {
-        console.log("WIN");
+      if (arr.every((cell) => board[cell] === active.mark)) {
         winner = active.player;
+        winner === "player1"
+          ? player1.congratulateWinner()
+          : player2.congratulateWinner();
         showNewGameBtn();
       }
     });
@@ -68,7 +93,7 @@ const GameController = (() => {
   };
 
   const checkForTie = () => {
-    if (GameBoard.boardArray.every(Boolean)) {
+    if (board.every(Boolean)) {
       console.log("TIE");
       showNewGameBtn();
     }
@@ -77,10 +102,10 @@ const GameController = (() => {
   const showNewGameBtn = () => {
     newGameBtn.classList.remove("hidden");
     gameBoard.classList.add("fade");
-    gameBoard.removeEventListener("click", startGame);
+    gameBoard.removeEventListener("click", playGame);
   };
 
-  const startGame = (e) => {
+  const playGame = (e) => {
     if (!e.target.classList.contains("cell")) return;
     GameBoard.addMarkToBoardArray(e.target.dataset.number, active.mark);
     checkForWinner(active);
@@ -92,18 +117,10 @@ const GameController = (() => {
     active = p1;
     newGameBtn.classList.add("hidden");
     gameBoard.classList.remove("fade");
-    gameBoard.addEventListener("click", startGame);
+    gameBoard.addEventListener("click", playGame);
   };
 
   newGameBtn.addEventListener("click", resetGame);
+
   resetGame();
 })();
-
-const Player = (name) => {
-  //-event listener to get name typed in. when name is submitted, display it in div
-  //function to highlight player when it's their turn
-  //function to congratulate winner
-};
-
-const player1 = Player("Player 1");
-const player2 = Player("Player 2");
