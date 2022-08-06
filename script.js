@@ -110,7 +110,10 @@ const GameController = (() => {
       }
     });
 
-    if (!winner) switchActivePlayer();
+    if (!winner) {
+      checkForTie();
+      switchActivePlayer();
+    }
   };
 
   const checkForTie = () => {
@@ -130,7 +133,7 @@ const GameController = (() => {
     if (!e.target.classList.contains("cell")) return;
     GameBoard.addMarkToBoardArray(e.target.dataset.number, active.mark);
     checkForWinner(active);
-    checkForTie();
+    // checkForTie();
   };
 
   const resetGame = () => {
