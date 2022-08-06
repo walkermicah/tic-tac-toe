@@ -136,10 +136,21 @@ h1 {
   padding: 2rem;
   border-radius: 5px;
   border: 1px solid white;
+  opacity: 0.9;
   display: grid;
   align-content: center;
   justify-content: center;
   gap: 2rem;
+}
+
+.winner-display {
+  font-size: 4rem;
+}
+
+.new-game-btn {
+  justify-self: center;
+  padding: 0.5rem 2rem;
+  font-size: 2rem;
 }
 
 .hidden {
