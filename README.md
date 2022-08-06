@@ -1,6 +1,6 @@
 # tic-tac-toe
 
-❎🅾️[Live deployment](https://walkermicah.github.io/tic-tac-toe/)🅾️❎
+❎🅾️ [Live deployment](https://walkermicah.github.io/tic-tac-toe/) 🅾️❎
 
 ## Project description
 
