@@ -8,14 +8,25 @@ const GameBoard = (() => {
   const updateGameboard = () => {
     const cells = document.querySelectorAll(".cell");
     cells.forEach((cell) => {
-      !board[cell.dataset.number]
-        ? (cell.textContent = "")
-        : (cell.textContent = `${board[cell.dataset.number]}`);
+      if (!board[cell.dataset.number]) {
+        cell.textContent = "";
+      }
+      if (board[cell.dataset.number] === "X") {
+        cell.textContent = "X";
+        cell.style.color = "rgb(0, 255, 247)";
+      }
+      if (board[cell.dataset.number] === "O") {
+        cell.textContent = "O";
+        cell.style.color = "greenyellow";
+      }
     });
   };
 
   const addMarkToBoardArray = (cell, mark) => {
-    if (board[cell]) return;
+    if (board[cell]) {
+      GameController.switchActivePlayer();
+      return;
+    }
     board[cell] = mark;
     updateGameboard();
   };
@@ -50,11 +61,14 @@ const GameController = (() => {
   const player1Name = document.getElementById("name-1");
   const player1Form = document.getElementById("form-1");
   const player1Input = document.getElementById("form-input-1");
+  const player1Submit = document.getElementById("submit-btn-1");
   const player2Display = document.getElementById("player-2");
   const player2Name = document.getElementById("name-2");
   const player2Form = document.getElementById("form-2");
   const player2Input = document.getElementById("form-input-2");
+  const player2Submit = document.getElementById("submit-btn-2");
   const winnerDisplay = document.querySelector(".winner-display");
+  const endGameDisplay = document.querySelector(".end-game-display");
 
   const board = GameBoard.getBoard();
 
@@ -71,7 +85,7 @@ const GameController = (() => {
   };
 
   const congratulateWinner = (winner) =>
-    (winnerDisplay.textContent = `Winner: ${winner}`);
+    (winnerDisplay.textContent = `Winner: ${winner}!`);
 
   const checkForWinner = (active) => {
     let winner;
@@ -101,14 +115,14 @@ const GameController = (() => {
 
   const checkForTie = () => {
     if (board.every(Boolean)) {
-      console.log("TIE");
+      winnerDisplay.textContent = "It's a tie!";
       showNewGameBtn();
     }
   };
 
   const showNewGameBtn = () => {
-    newGameBtn.classList.remove("hidden");
-    gameBoard.classList.add("fade");
+    endGameDisplay.classList.remove("hidden");
+    playerDisplay.classList.add("fade");
     gameBoard.removeEventListener("click", playGame);
   };
 
@@ -122,8 +136,8 @@ const GameController = (() => {
   const resetGame = () => {
     GameBoard.resetBoard();
     active = p1;
-    newGameBtn.classList.add("hidden");
-    gameBoard.classList.remove("fade");
+    endGameDisplay.classList.add("hidden");
+    playerDisplay.classList.remove("fade");
     gameBoard.addEventListener("click", playGame);
     winnerDisplay.textContent = "";
   };
@@ -136,14 +150,17 @@ const GameController = (() => {
     display.classList.remove("hidden");
   };
 
-  const editName = (display, form) => {
+  const editName = (display, form, input) => {
     display.classList.add("hidden");
     form.classList.remove("hidden");
+    input.focus();
   };
 
   playerDisplay.addEventListener("click", (e) => {
-    if (e.target.id === "edit-icon-1") editName(player1Display, player1Form);
-    if (e.target.id === "edit-icon-2") editName(player2Display, player2Form);
+    if (e.target.id === "edit-icon-1")
+      editName(player1Display, player1Form, player1Input);
+    if (e.target.id === "edit-icon-2")
+      editName(player2Display, player2Form, player2Input);
 
     if (e.target.id === "submit-btn-1")
       submitName(
@@ -163,7 +180,21 @@ const GameController = (() => {
       );
   });
 
+  playerDisplay.addEventListener("keypress", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      if (document.activeElement.id === "form-input-1") {
+        player1Submit.click();
+      }
+      if (document.activeElement.id === "form-input-2") {
+        player2Submit.click();
+      }
+    }
+  });
+
   newGameBtn.addEventListener("click", resetGame);
 
   resetGame();
+
+  return { switchActivePlayer };
 })();
