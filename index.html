@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="style.css" />
     <script defer src="script.js"></script>
 
-    <link rel="icon" type="image/x-icon" href="img/icons8-arcade-64.png" />
+    <link rel="icon" type="image/x-icon" href="img/favicon.png" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,10 +19,11 @@
     <title>Tic-Tac-Toe</title>
   </head>
   <body>
+    <h1>TIC TAC TOE</h1>
     <div class="player-container">
       <div class="player-display">
         <div class="player" id="player-1">
-          <span class="player-name" id="name-1">PLAYER 1</span>
+          <span class="player-name x" id="name-1">PLAYER 1</span>
           <button class="edit-btn">
             <img
               src="img/edit.png"
@@ -38,7 +39,6 @@
             placeholder="Player name"
             class="form-input"
             id="form-input-1"
-            autofocus
           />
           <input
             type="button"
@@ -51,7 +51,7 @@
 
       <div class="player-display">
         <div class="player" id="player-2">
-          <span class="player-name" id="name-2">PLAYER 2</span>
+          <span class="player-name o" id="name-2">PLAYER 2</span>
           <button class="edit-btn">
             <img
               src="img/edit.png"
@@ -67,7 +67,6 @@
             placeholder="Player name"
             class="form-input"
             id="form-input-2"
-            autofocus
           />
           <input
             type="button"
@@ -91,7 +90,10 @@
         <div class="cell" data-number="7"></div>
         <div class="cell" data-number="8"></div>
       </div>
-      <button class="new-game-btn hidden">NEW GAME</button>
+      <div class="end-game-display hidden">
+        <div class="winner-display"></div>
+        <button class="new-game-btn">NEW GAME</button>
+      </div>
     </div>
   </body>
 </html>
